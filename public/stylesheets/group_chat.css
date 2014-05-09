@@ -1,0 +1,52 @@
+body {
+	background-color: #24587A;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#container {
+	width: 900px;
+	margin: 0 auto;
+	background-color: #3E97D1;
+	padding: 20px;
+}
+
+#right {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#left {
+	display: inline-block;
+}
+
+#messages {
+	height: 200px;
+	width: 600px;
+	background-color: #EEEEEE;
+	word-wrap: break-word;
+	overflow: scroll;
+	display: inline-block;
+	padding: 10px;
+	border: groove;
+	border-color: grey;
+}
+
+#new_message {
+	margin-top: 10px;
+	width: 500px;
+	height: 75px;
+	border: outset;
+	border-color: grey;
+}
+
+#users {
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 10px;
+	background-color: #EEEEEE;
+	height: 200px;
+	width: 100px;
+	padding: 10px;
+	border: groove;
+	border-color: grey;
+}

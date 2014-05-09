@@ -1,0 +1,20 @@
+body {
+  padding: 50px;
+  
+}
+
+a {
+  color: #00B7FF;
+}
+h3{
+	color:white;
+}
+
+.top{
+	background-color: green;
+	color: white;
+	font-size: large;
+	width: 500px;
+	border: hidden;
+	padding:10px 10px 10px 10px;
+}

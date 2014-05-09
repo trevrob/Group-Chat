@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/group_chat.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script>
+     io = io.connect('http://localhost:3000');
+     var name = prompt('What is your name?');
+     var room = prompt('List of Available Chat Rooms: Programmers, Artists, Athletes, Plummers');
+     $(document).ready(function(){
+      console.log(name);
+      console.log(room);
+
+        /// when new user joins ///
+      io.emit('new_user', {name: name, room: room});
+
+      $('#heading').append(room);
+
+      io.on('existing_users', function(users){
+
+        for (i in users)
+        {
+          console.log(users);
+          $('#users').append("<p id='"+users[i].id+"'>"+users[i].name+"</p>");
+        }
+      })
+
+      io.on('show_new_user', function(user){
+        
+        $('#users').append("<p id='"+user.id+"'>"+user.name+"</p>");
+        $('#messages').append("<p style='color: green'>*** <b>"+user.name+"</b> has joined the room. ***</p>");
+        $('#messages').scrollTop($('#messages').height());
+      })
+
+      io.on('existing_messages', function(messages){
+        for(i in messages)
+        {
+          $('#messages').append("<p><b>"+messages[i].name+":</b> " + messages[i].message+"</p>");
+        }
+      })
+
+      /// sending new message /// 
+     $('#submit').submit(function(){
+        message = $('#new_message').val();
+        io.emit('new_message', {name: name, message: message, room: room});
+
+        $('#new_message').val('');
+        return false;
+     })
+
+     io.on('updated_message', function(message){
+      // console.log('MESSAGE!!!!', message);
+      console.log('got here');
+      $('#messages').append("<p><b>"+message.name+":</b> " + message.message+"</p>");
+      $('#messages').scrollTop($('#messages').height());
+     })
+
+    io.on('disconnect_user', function(user){
+        $('#messages').append("<p style='color: red'>*** <b>"+user.name+"</b> has left the room. ***</p>");
+        $('#messages').scrollTop($('#messages').height());
+
+        $("#"+user.id).fadeOut(300, function(){
+          $(this).remove();
+        }); 
+      })
+    })
+
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+
+    <div id='left'>
+      <h2 id='heading'>Group Chat: </h2>
+      <div id='messages'></div>
+    </div>
+
+    <div id='right'>
+      <h2>Current users: </h2>
+      <div id='users'></div>
+    </div>
+
+    <form id='submit'>
+      <input id='new_message' type='text' placeholder='Type Your Message Here'>
+      <input style='display: none' type='submit'>
+    </form>
+    <p>Press Enter to Send your Message</p>
+    </div>
+  </body>
+</html>
